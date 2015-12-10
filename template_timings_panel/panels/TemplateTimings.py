@@ -1,7 +1,7 @@
 from debug_toolbar.panels import Panel
 from django.conf import settings
 from django.template import base as template_base
-from django.template.base import Template, Library
+from django.template.base import Template
 from django.template.loader_tags import BlockNode
 from debug_toolbar.panels import sql
 from django.core.exceptions import ImproperlyConfigured
@@ -87,8 +87,8 @@ def wrap_generic_node(node, name):
             node.render = _template_render_wrapper(
                 node.render, node.__name__, name=lambda unused_: name)
 
-template_base.generic_tag_compiler = _tag_compiler(
-    template_base.generic_tag_compiler)
+#template_base.generic_tag_compiler = _tag_compiler(
+#    template_base.generic_tag_compiler)
 
 
 def _template_render_wrapper(func, key, should_add=lambda n: True, name=lambda s: s.name if s.name else ''):
@@ -204,7 +204,7 @@ class TemplateTimings(Panel):
     def disable_instrumentation(self):
         if hasattr(Template.render, "original"):
             Template.render = Template.render.original
-            BlockNode.render = BlockNode.render.original
+            #BlockNode.render = BlockNode.render.original
             for node, name in FOUND_GENERIC_NODES:
                 if hasattr(node.render, 'original'):
                     node.render = node.render.original
